@@ -29,13 +29,55 @@
     </div>
 
 <script>
-  const msg = new SpeechSynthesisUtterance();
-  let voices = [];
-  const voicesDropdown = document.querySelector('[name="voice"]');
-  const options = document.querySelectorAll('[type="range"], [name="text"]');
-  const speakButton = document.querySelector('#speak');
-  const stopButton = document.querySelector('#stop');
+   const msg = new SpeechSynthesisUtterance();
+let voices = [];
+const voicesDropdown = document.querySelector('[name="voice"]');
+const rateInput = document.querySelector('[name="rate"]');
+const pitchInput = document.querySelector('[name="pitch"]');
+const textInput = document.querySelector('[name="text"]');
+const speakButton = document.querySelector('#speak');
+const stopButton = document.querySelector('#stop');
 
+// Function to populate the voice options in the dropdown
+function populateVoices() {
+    voices = speechSynthesis.getVoices();
+    voicesDropdown.innerHTML = voices.map(voice => {
+        return `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`;
+    }).join('');
+}
+
+function populateVoices(){
+    voices  = speechSynthesis();
+    voicesDropdown.innerHTML = voices.map(voice => {
+        return `<option value = "${voice.name}">${voice.name} (${voice.lang})</option>`;
+
+    }).join('');
+}
+
+// Set the selected voice when a new one is chosen from the dropdown
+voicesDropdown.addEventListener('change', () => {
+    const selectedVoice = voices.find(voice => voice.name === voicesDropdown.value);
+    msg.voice = selectedVoice;
+});
+
+// Function to start speaking
+speakButton.addEventListener('click', () => {
+    msg.text = textInput.value; // Set the text to be spoken
+    msg.rate = rateInput.value; // Set the speaking rate
+    msg.pitch = pitchInput.value; // Set the speaking pitch
+    speechSynthesis.speak(msg); // Start speaking the text
+});
+
+// Function to stop speaking
+stopButton.addEventListener('click', () => {
+    speechSynthesis.cancel(); // Stop the speech synthesis
+});
+
+// Populate voices list on page load and when voices are changed
+speechSynthesis.onvoiceschanged = populateVoices;
+
+// Initialize the voices list
+populateVoices();
   //Your code goes here
 </script>
 
