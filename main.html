@@ -46,13 +46,7 @@ function populateVoices() {
     }).join('');
 }
 
-function populateVoices(){
-    voices  = speechSynthesis();
-    voicesDropdown.innerHTML = voices.map(voice => {
-        return `<option value = "${voice.name}">${voice.name} (${voice.lang})</option>`;
 
-    }).join('');
-}
 
 // Set the selected voice when a new one is chosen from the dropdown
 voicesDropdown.addEventListener('change', () => {
